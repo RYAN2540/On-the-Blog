@@ -9,8 +9,9 @@ from ..models import Post
 @main.route('/')
 def index():
     quote=get_quote()
+    blog_posts=Post.query.order_by(Post.posted.desc())
 
-    return render_template('index.html', quote=quote)
+    return render_template('index.html', quote=quote, posts=blog_posts)
 
 
 @main.route('/admin')

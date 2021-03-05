@@ -7,8 +7,26 @@
                     <h5 class="card-title">{{post.title | upper}}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{post.category | upper}}</h6>
                     <h6 class="card-subtitle mb-2 text-muted">{{post.posted.strftime("%d %b %Y %I:%M %p")}}</h6>
-                    <p class="card-text">{{post.text}}</p>                                       
+                    <p class="card-text">{{post.text | truncate(400)}}</p>
 
+                    <p class="text-muted"><a href="{{(url_for('main.blog_post', post_id=post.id))}}">Read article</a></p>                    
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+
+{% endmacro %}
+
+
+{% macro displayComments(comments) %}
+
+    {% for comment in comments %}
+        <div class="col-xs-12">
+            <div class="card comment-card">
+                <div class="card-body">                   
+                    <p class="card-text">{{comment.comment_text}}</p>                    
+                    <h6 class="card-subtitle mb-2 text-muted">-{{comment.posted.strftime("%d %b %Y %I:%M %p")}}</h6>                                     
                 </div>
             </div>
         </div>

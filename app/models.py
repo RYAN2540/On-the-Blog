@@ -45,7 +45,8 @@ class Post(db.Model):
     title=db.Column(db.String)
     text=db.Column(db.String)
     posted = db.Column(db.DateTime,default=datetime.utcnow)    
-    category = db.Column(db.String)    
+    category = db.Column(db.String)  
+    comments = db.relationship('Comment',backref = 'post',lazy = "dynamic")    
 
     def save_post(self):
         db.session.add(self)
@@ -54,3 +55,19 @@ class Post(db.Model):
 
     def __repr__(self):
         return f'{self.title}'
+
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer,primary_key = True)
+    comment_text=db.Column(db.String)
+    posted = db.Column(db.DateTime,default=datetime.utcnow)    
+    post_id = db.Column(db.Integer,db.ForeignKey("posts.id"))
+
+    def save_comment(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+    def __repr__(self):
+        return f'{self.comment}'

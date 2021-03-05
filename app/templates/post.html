@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+
+{% import 'bootstrap/wtf.html' as wtf%}
+
+{% import 'macros.html' as macro%}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 border-b">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{post.title | upper}}</h4>
+                    <h5 class="card-subtitle mb-2 text-muted">{{post.category | upper}}</h5>                    
+                    <h5 class="card-subtitle mb-2 text-muted">{{post.posted.strftime("%d %b %Y %I:%M %p")}}</h5>
+                    <p class="card-text">{{post.text}}</p>                                        
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            {{ wtf.quick_form(comment_form) }}        
+        </div><br>
+        {{macro.displayComments(comments)}}
+    </div>
+</div>
+
+{% endblock %} 

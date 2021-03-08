@@ -1,10 +1,10 @@
-from flask import render_template,request,redirect,url_for
+from flask import render_template,request,redirect,url_for,abort
 from flask_login import login_required
 from . import main
 from ..requests import get_quote
-from .forms import PostForm,CommentForm,SubscribeForm,UnsubscribeForm,ContactForm
-from ..models import Post,Comment,Subscriber,Contact
-from .. import db
+from .forms import PostForm,CommentForm,SubscribeForm,UnsubscribeForm,ContactForm,UpdateProfile
+from ..models import Post,Comment,Subscriber,Contact,Admin
+from .. import db,photos
 from ..email import mail_message
 
 
@@ -186,3 +186,43 @@ def contact():
     return render_template('contact.html',title = title, contact_form=form)
 
    
+@main.route('/profile')
+def profile(): 
+    author = Admin.query.first()
+    if author is None:
+        abort(404)
+
+    title='Author profile'
+    return render_template('profile.html', author=author)
+
+
+@main.route('/update_profile',methods = ['GET','POST'])
+@login_required
+def update_profile(): 
+    author = Admin.query.first()
+    if author is None:
+        abort(404)
+    form = UpdateProfile()
+
+    if 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path = f'photos/{filename}'
+        author.prof_pic_path = path
+        db.session.commit()
+        return redirect(url_for('main.profile'))
+
+    if form.validate_on_submit():
+        author.bio = form.bio.data
+        author.name = form.name.data
+
+        db.session.add(author)
+        db.session.commit()
+
+        return redirect(url_for('.profile'))
+
+    title='Update profile'
+    return render_template('update_profile.html', form=form)
+
+
+
+

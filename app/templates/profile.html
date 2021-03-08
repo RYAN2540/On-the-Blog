@@ -1,0 +1,37 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<div class="container">
+<div class="row">
+<!-- displaying  author name-->
+  <div class="col-md-4">
+    {% if author.name %}
+    <h3> {{author.name| upper}} </h3>
+    {%else%}
+        <h3> No name for author </h3>
+    {% endif %}
+
+
+    <!--Displaying author bio-->
+    {% if author.bio %}
+      <p> {{author.bio}}</p>
+    {%else%}
+      <p> No bio </p>
+    {% endif %}
+    {% if current_user.is_authenticated %}
+    <p class="text-primary"><a href="/update_profile">Edit profile</a></p>
+    {% endif %}
+  </div>
+
+  <!--Display profile photo-->
+  <div class="col-md-4">
+
+    {% if author.prof_pic_path %}
+    <img src="{{url_for('static',filename=author.prof_pic_path)}}" alt="" class="img-thumbnail">
+    {%else%}
+    <p>No profile picture</p>
+    {% endif %}
+  </div>
+</div>
+</div>
+{% endblock %}

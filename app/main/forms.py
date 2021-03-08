@@ -37,3 +37,8 @@ class ContactForm(FlaskForm):
     title = StringField('Title',validators=[Required()])
     message = TextAreaField('Message', validators=[Required()],render_kw={'class': 'form-control', 'rows': 6})    
     submit = SubmitField('Send')
+
+class UpdateProfile(FlaskForm):
+    name = StringField('Your name',validators=[Required()])
+    bio = TextAreaField('Bio',validators = [Required()])
+    submit = SubmitField('Update')

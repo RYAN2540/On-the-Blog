@@ -22,6 +22,9 @@ class Admin(UserMixin, db.Model):
     username = db.Column(db.String(255),index = True)
     email = db.Column(db.String(255),unique = True,index = True)    
     password_hash = db.Column(db.String(255))
+    name = db.Column(db.String)
+    prof_pic_path = db.Column(db.String)
+    bio = db.Column(db.String)
 
     @property
     def password(self):

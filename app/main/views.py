@@ -88,6 +88,16 @@ def delete_blog(post_id):
     return redirect(url_for('.index'))
 
 
+@main.route('/comment/delete/<post_id>/<comment_id>',methods = ['GET','POST'])
+@login_required
+def delete_comment(comment_id, post_id):
+    comment= Comment.query.filter_by(id = comment_id).first() 
+    db.session.delete(comment)
+    db.session.commit()
+
+    return redirect(url_for('.blog_post', post_id=post_id))
+
+
 
 
 

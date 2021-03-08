@@ -25,7 +25,11 @@
         <div class="col-xs-12">
             {{ wtf.quick_form(comment_form) }}        
         </div><br>
-        {{macro.displayComments(comments)}}
+        {% if current_user.is_authenticated %} 
+            {{macro.displayCommentsAdmin(comments)}}
+        {% else %}
+            {{macro.displayComments(comments)}}
+        {% endif %}
     </div>
 </div>
 

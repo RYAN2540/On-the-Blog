@@ -13,9 +13,7 @@ def index():
     quote=get_quote()
     blog_posts=Post.query.order_by(Post.posted.desc())
     author = Admin.query.first()
-    if author is None:
-        abort(404)
-
+    
     return render_template('index.html', quote=quote, posts=blog_posts,author=author)
 
 

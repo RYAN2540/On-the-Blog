@@ -4,7 +4,7 @@ from app import create_app,db
 from app.models import Admin,Post
 
 # Creating app instance
-app = create_app('development')
+app = create_app('test')
 
 manager = Manager(app)
 manager.add_command('server',Server)
@@ -15,7 +15,7 @@ manager.add_command('db',MigrateCommand)
 def test():
     """Run the unit tests."""
     import unittest
-    tests = unittest.TestLoader().discover('tests')
+    tests = unittest.TestLoader().discover('development')
     unittest.TextTestRunner(verbosity=2).run(tests)
 
 @manager.shell

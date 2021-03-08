@@ -2,8 +2,8 @@ from flask import render_template,request,redirect,url_for
 from flask_login import login_required
 from . import main
 from ..requests import get_quote
-from .forms import PostForm,CommentForm,SubscribeForm,UnsubscribeForm
-from ..models import Post,Comment,Subscriber
+from .forms import PostForm,CommentForm,SubscribeForm,UnsubscribeForm,ContactForm
+from ..models import Post,Comment,Subscriber,Contact
 from .. import db
 from ..email import mail_message
 
@@ -146,7 +146,7 @@ def unsubscribe():
         mail_list=[]
         mail_list.append(new_email)
 
-        mail_message("You've unsubscribed from codescripts.","email/bye",mail_list)
+        mail_message("You've unsubscribed from On the Blog.","email/bye",mail_list)
 
         return redirect(url_for('.index'))   
 
@@ -154,3 +154,35 @@ def unsubscribe():
     return render_template('unsubscribe.html',title = title, unsubscribe_form=form)
 
 
+@main.route('/contact',methods = ['GET','POST'])
+def contact():
+    form=ContactForm()
+
+    if form.validate_on_submit():
+        name = form.name.data
+        email = form.email.data
+        title = form.title.data
+        message = form.message.data        
+
+        # Updated contact instance
+        this_contact = Contact(name=name, email=email, title=title, message=message)
+
+        # save contact method
+        this_contact.save_contact()
+
+        mail_list=[]
+        mail_list.append(email)
+
+        mail_message("We've received your message","email/receipt",mail_list, this_contact=this_contact)
+
+        to_me=[]
+        to_me.append("ryandev8121@gmail.com")
+
+        mail_message("You've been contacted","email/mail_me",to_me, this_contact=this_contact)
+
+        return redirect(url_for('.contact'))   
+
+    title = 'Contact'
+    return render_template('contact.html',title = title, contact_form=form)
+
+   

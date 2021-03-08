@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,TextAreaField,SelectField,SubmitField,BooleanField,ValidationError
+from wtforms import StringField,TextAreaField,SelectField,SubmitField,ValidationError
 from wtforms.validators import Required,Email
 from ..models import Subscriber
 import email_validator
@@ -30,3 +30,10 @@ class UnsubscribeForm(FlaskForm):
     def validate_email(self,data_field):
         if Subscriber.query.filter_by(email =data_field.data).first() == None:
             raise ValidationError("You are not subscribed.")
+
+class ContactForm(FlaskForm):
+    name = StringField('Your name',validators=[Required()])
+    email = StringField('Your Email',validators=[Required(),Email()])
+    title = StringField('Title',validators=[Required()])
+    message = TextAreaField('Message', validators=[Required()],render_kw={'class': 'form-control', 'rows': 6})    
+    submit = SubmitField('Send')

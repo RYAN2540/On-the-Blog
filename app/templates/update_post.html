@@ -2,8 +2,6 @@
 
 {% import 'bootstrap/wtf.html' as wtf%}
 
-{% import 'macros.html' as macro%}
-
 {% block content %}
 
 <div class="container">
@@ -14,18 +12,15 @@
                     <h4 class="card-title">{{post.title | upper}}</h4>
                     <h5 class="card-subtitle mb-2 text-muted">{{post.category | upper}}</h5>                    
                     <h5 class="card-subtitle mb-2 text-muted">{{post.posted.strftime("%d %b %Y %I:%M %p")}}</h5>
-                    <p class="card-text">{{post.text}}</p>  
-                    {% if current_user.is_authenticated %} 
-                        <button><a href="{{(url_for('main.update_blog', post_id=post.id))}}">Edit</a></button>    
-                    {% endif %}                                        
+                    <p class="card-text">{{post.text}}</p>                                                       
                 </div>
             </div>
         </div>
         <div class="col-xs-12">
-            {{ wtf.quick_form(comment_form) }}        
-        </div><br>
-        {{macro.displayComments(comments)}}
+            <h2>Edit post</h2>
+            {{ wtf.quick_form(post_form) }}        
+        </div><br>        
     </div>
 </div>
 
-{% endblock %} 
+{% endblock %}

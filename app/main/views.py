@@ -223,6 +223,18 @@ def update_profile():
     title='Update profile'
     return render_template('update_profile.html', form=form)
 
+@main.route('/post/category/<cat>')
+def category(cat):
+    quote=get_quote()
+    posts=Post.query.filter_by(category=cat).order_by(Post.posted.desc())   
+    if len(Post.query.filter_by(category=cat).order_by(Post.posted.desc()).all())>0:    
+        title=posts[0].category.capitalize()
+    else:
+        title='No posts yet'
+    return render_template('category.html', title=title, posts=posts, quote=quote)
 
+
+
+    
 
 

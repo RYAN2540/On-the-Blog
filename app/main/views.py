@@ -2,9 +2,10 @@ from flask import render_template,request,redirect,url_for
 from flask_login import login_required
 from . import main
 from ..requests import get_quote
-from .forms import PostForm,CommentForm
-from ..models import Post,Comment
+from .forms import PostForm,CommentForm,SubscribeForm
+from ..models import Post,Comment,Subscriber
 from .. import db
+from ..email import mail_message
 
 
 @main.route('/')
@@ -29,6 +30,14 @@ def admin():
 
         # save post method
         this_post.save_post()
+
+        mail_list=[]
+        subscribers=Subscriber.query.order_by(Subscriber.id.desc())
+        for sub in subscribers:
+            mail_list.append(sub.email)
+
+        mail_message("New post on On the Blog","email/new_post",mail_list,this_post=this_post)
+
         return redirect(url_for('.index'))
 
     title = 'Admin Page'
@@ -98,6 +107,29 @@ def delete_comment(comment_id, post_id):
     return redirect(url_for('.blog_post', post_id=post_id))
 
 
+
+@main.route('/subscribe',methods = ['GET','POST'])
+def subscribe():
+    form=SubscribeForm()
+
+    if form.validate_on_submit():
+        new_email = form.email.data             
+
+        # Updated subscriber instance
+        this_subscriber = Subscriber(email=new_email)
+
+        # save subscriber method
+        this_subscriber.save_subscriber()
+
+        mail_list=[]
+        mail_list.append(new_email)
+
+        mail_message("Your subscription to On the Blog.","email/new_subscriber",mail_list)
+
+        return redirect(url_for('.index'))   
+
+    title = 'Subscribe'
+    return render_template('subscribe.html',title = title, subscription_form=form)
 
 
 

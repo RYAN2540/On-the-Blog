@@ -1,6 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,TextAreaField,SelectField,SubmitField
-from wtforms.validators import Required
+from wtforms import StringField,TextAreaField,SelectField,SubmitField,ValidationError
+from wtforms.validators import Required,Email
+from ..models import Subscriber
+import email_validator
+
 
 class PostForm(FlaskForm):
     title = StringField('Post title',validators=[Required()])
@@ -9,5 +12,13 @@ class PostForm(FlaskForm):
     submit = SubmitField('Post')
 
 class CommentForm(FlaskForm):
-    comment = StringField('Comment publicly.',validators = [Required()])
+    comment = StringField('Comment',validators = [Required()])
     submit = SubmitField('Post')
+
+class SubscribeForm(FlaskForm):
+    email = StringField('Your Email',validators=[Required(),Email()])
+    submit = SubmitField('Subscribe')
+
+    def validate_email(self,data_field):
+        if Subscriber.query.filter_by(email =data_field.data).first():
+            raise ValidationError("You've already subscribed.")

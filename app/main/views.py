@@ -2,7 +2,7 @@ from flask import render_template,request,redirect,url_for
 from flask_login import login_required
 from . import main
 from ..requests import get_quote
-from .forms import PostForm,CommentForm,SubscribeForm
+from .forms import PostForm,CommentForm,SubscribeForm,UnsubscribeForm
 from ..models import Post,Comment,Subscriber
 from .. import db
 from ..email import mail_message
@@ -131,5 +131,26 @@ def subscribe():
     title = 'Subscribe'
     return render_template('subscribe.html',title = title, subscription_form=form)
 
+
+@main.route('/unsubscribe',methods = ['GET','POST'])
+def unsubscribe():
+    form=UnsubscribeForm()
+
+    if form.validate_on_submit():
+        new_email = form.email.data             
+
+        unsubscriber= Subscriber.query.filter_by(email = new_email).first() 
+        db.session.delete(unsubscriber)
+        db.session.commit()
+
+        mail_list=[]
+        mail_list.append(new_email)
+
+        mail_message("You've unsubscribed from codescripts.","email/bye",mail_list)
+
+        return redirect(url_for('.index'))   
+
+    title = 'Unsubscribe'
+    return render_template('unsubscribe.html',title = title, unsubscribe_form=form)
 
 

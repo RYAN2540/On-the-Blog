@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,TextAreaField,SelectField,SubmitField,ValidationError
+from wtforms import StringField,TextAreaField,SelectField,SubmitField,BooleanField,ValidationError
 from wtforms.validators import Required,Email
 from ..models import Subscriber
 import email_validator
@@ -22,3 +22,11 @@ class SubscribeForm(FlaskForm):
     def validate_email(self,data_field):
         if Subscriber.query.filter_by(email =data_field.data).first():
             raise ValidationError("You've already subscribed.")
+
+class UnsubscribeForm(FlaskForm):
+    email = StringField('Your Email',validators=[Required(),Email()])
+    submit = SubmitField('Unsubscribe')
+
+    def validate_email(self,data_field):
+        if Subscriber.query.filter_by(email =data_field.data).first() == None:
+            raise ValidationError("You are not subscribed.")

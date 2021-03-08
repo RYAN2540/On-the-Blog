@@ -5,88 +5,86 @@
 {% block content %}
 
 <div class="container-fluid">
-    <div class="row">
-        <!--Sidenav-->
-        <div class="col-xs-12 col-md-3">
-            <div class="jumbotron jumbotron1">
-                <div class="row border-b">
-                    <div class="col-xs-12 brand">
-                        <a href="/">
-                            <h1>On the Blog.</h1>                    
-                        </a>
-                        <h4 class="text-right">- a coder's blog</h4>
-                    </div>
-                </div>                
-                <div class="row">
-                    <div class="col-xs-12">
-                        <p><a href="/">Home</a></p>
-                        <hr>
-                    </div>
-                    <div class="col-xs-12">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <p>Categories</p>
-                            </div>                            
-                            <div class="col-xs-12">
-                                <div class="row lists">
-                                    <div class="col-xs-2"></div>
-                                    <div class="col-xs-10">
-                                        <p><a href="{{url_for('main.category',cat='frontend')}}">Frontend</a></p>
-                                        <p><a href="{{url_for('main.category',cat='backend')}}">Backend</a></p>
-                                        <p><a href="{{url_for('main.category',cat='fullstack')}}">FullStack</a></p>
-                                        <p><a href="{{url_for('main.category',cat='mobile')}}">Mobile</a></p>
-                                        <p><a href="{{url_for('main.category',cat='devOps')}}">DevOps</a></p>                                        
-                                    </div>
-                                </div>
+    <div class="row jumbo">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-0 col-md-1"></div>
+                <!-- Carousel -->                
+                <div class="col-xs-12 col-md-6 carousel-border">
+                    {% if posts[0] %}
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel">                            
+                        <div class="carousel-inner">
+                          <div class="item active">
+                            <img src="{{url_for('static',filename=posts[0].post_pic_path)}}" alt="...">
+                            <div class="carousel-caption">
+                                <h4 class="cyan"><a href="/post/{{posts[0].id}}">{{posts[0].title}} | {{posts[0].category | capitalize}}</a></h4>
                             </div>
-                        </div>                                               
-                        <hr>
-                    </div>
-                    <div class="col-xs-12">
-                        <p><a href="/">Author</a></p>
-                        <hr>
-                    </div>
-                    <div class="col-xs-12">
-                        <p><a href="/subscribe">Subscribe</a></p>
-                        <hr>
-                    </div>
-                    <div class="col-xs-12">
-                        <p><a href="/contact">Contact</a></p>
-                        <hr>
-                    </div>                                
+                        </div>
+
+                        {{macro.displayCarousel(posts)}}
+
+                      </div>
+
+                      <!-- Controls -->
+                      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">                          
+                      </a>
+                      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">                          
+                      </a>
+                  </div> 
+                  {% endif %}
+                  <!-- /Carousel -->                               
                 </div>
+                <div class="col-xs-0 col-md-1"></div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="card author-card">
+                        {% if author.prof_pic_path %}
+                        <img class="card-img-top img-thumbnail" src="{{url_for('static',filename=author.prof_pic_path)}}" alt="Profile picture">
+                        {%else%}
+                        <img class="card-img-top" src="https://pecb.com/conferences/wp-content/uploads/2017/10/no-profile-picture.jpg" alt="Profile picture">
+                        {% endif %}                        
+                        <div class="card-body">
+                            <h5 class="text-muted">Author</h5>
+                            {% if author.name %}
+                            <h5 class="card-title orange"> {{author.name| upper}} </h5>
+                            {%else%}
+                            <h5 class="card-title"> No name for author </h5>
+                            {% endif %}
+                            {% if author.bio %}
+                            <p class="card-text"> {{author.bio}}</p>
+                            {%else%}
+                            <p class="card-text"> No bio </p>
+                            {% endif %}
+                            {% if current_user.is_authenticated %}
+                            <p class="card-text text-primary"><a href="/update_profile">Edit profile</a></p>
+                            {% endif %}                                                            
+                        </div>
+                      </div>
+                </div>
+                <div class="col-xs-0 col-md-2"></div>
             </div>
         </div>
+    </div>
+</div>
 
-         <!--Content section-->
-         <div class="col-xs-12 col-md-6">
-            <div class="jumbotron jumbotron2">                
-                <div class="row display-flex">
-                    <div class="col-xs-12 border-b">
-                        <h2 class="pitch-head">Posts</h2>
-                    </div>
-
-                    {{ macro.displayBlogs(posts) }}
-
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-8">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h1>Posts</h1>
+                    <hr>       
                 </div>
             </div>
+            <div class="row display-flex">
+                {{ macro.displayBlogs(posts) }}
+            </div>
         </div>
-
-        <!--right column section-->
+        <div class="col-xs-0 col-md-1"></div>
         <div class="col-xs-12 col-md-3">
-            <div class="jumbotron jumbotron3">
-                {% if current_user.is_authenticated %}                    
-                    <h3>{{current_user.username| capitalize}}</h3>                    
-                    <a href="{{url_for('auth.logout')}}"><button class="btn btn-primary">Sign out</button></a>                    
-                {% else %}
-                <h3>Admin</h3>
-                <a href="{{url_for('auth.login')}}"><button class="btn btn-primary">Sign in</button></a>
-                {%endif%}
-            </div>  
-            <div class="jumbotron jumbotron4">
+            <div class="jumbotron jumbotron-quote"></div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <h2>Quote</h2>
+                        <h2><u>Quote</u></h2>
                         <p>"{{quote.quote}}"</p>
                         <p class="text-muted">- {{quote.author}}</p> 
                     </div>

@@ -2,7 +2,7 @@
 
 {% block navbar %}
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-fixed-top navbar-default">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -28,7 +28,7 @@
               <li><a href="{{url_for('main.category',cat='fullstack')}}">Fullstack</a></li>
               <li><a href="{{url_for('main.category',cat='devOps')}}">DevOps</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="#">Latest posts</a></li>              
+              <li><a href="/">Latest posts</a></li>              
             </ul>
           </li>
           <li><a href="/profile">Author</a></li>
@@ -43,7 +43,7 @@
         </ul> 
         {% if current_user.is_authenticated %}
         <ul class="nav navbar-nav navbar-right">  
-            <li><a href="#">New post</a></li>        
+            <li><a href="/admin">New post</a></li>        
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{current_user.username| capitalize}} <span class="caret"></span></a>
               <ul class="dropdown-menu">

@@ -15,7 +15,7 @@ def login():
         admin = Admin.query.filter_by(email = login_form.email.data).first()
         if admin is not None and admin.verify_password(login_form.password.data):
             login_user(admin,login_form.remember.data)
-            return redirect(request.args.get('next') or url_for('main.admin'))
+            return redirect(request.args.get('next') or url_for('main.index'))
 
         flash('Invalid username or password')
 

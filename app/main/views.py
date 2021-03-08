@@ -22,7 +22,8 @@ def index():
 @main.route('/admin',methods = ['GET','POST'])
 @login_required
 def admin(): 
-    form=PostForm()        
+    form=PostForm()
+    quote=get_quote()       
     if form.validate_on_submit():
         title = form.title.data
         text = form.text.data
@@ -43,13 +44,14 @@ def admin():
 
         return redirect(url_for('.index'))
 
-    title = 'Admin Page'
+    title = 'New Post'
 
-    return render_template('admin.html', title=title, post_form=form)    
+    return render_template('admin.html', title=title, post_form=form, quote=quote)    
 
 
 @main.route('/post/<post_id>',methods = ['GET','POST'])
 def blog_post(post_id):
+    quote=get_quote()
     post=Post.query.filter_by(id=post_id).first()
     form = CommentForm()
 
@@ -66,7 +68,7 @@ def blog_post(post_id):
 
     comments=Comment.query.filter_by(post_id=post_id).order_by(Comment.posted.desc())  
     title = post.title
-    return render_template('post.html',title = title, comments=comments, comment_form=form, post=post)
+    return render_template('post.html',title = title, comments=comments, comment_form=form, post=post, quote=quote)
 
 
 
@@ -74,7 +76,9 @@ def blog_post(post_id):
 @login_required
 def update_blog(post_id):
     form=PostForm()
-    post = Post.query.filter_by(id = post_id).first()       
+    post = Post.query.filter_by(id = post_id).first()
+    if post is None:
+        abort(404)        
     if form.validate_on_submit():
         post.title = form.title.data
         post.text = form.text.data
@@ -120,6 +124,7 @@ def delete_comment(comment_id, post_id):
 
 @main.route('/subscribe',methods = ['GET','POST'])
 def subscribe():
+    quote=get_quote()
     form=SubscribeForm()
 
     if form.validate_on_submit():
@@ -139,11 +144,12 @@ def subscribe():
         return redirect(url_for('.index'))   
 
     title = 'Subscribe'
-    return render_template('subscribe.html',title = title, subscription_form=form)
+    return render_template('subscribe.html',title = title, subscription_form=form, quote=quote)
 
 
 @main.route('/unsubscribe',methods = ['GET','POST'])
 def unsubscribe():
+    quote=get_quote()
     form=UnsubscribeForm()
 
     if form.validate_on_submit():
@@ -161,11 +167,12 @@ def unsubscribe():
         return redirect(url_for('.index'))   
 
     title = 'Unsubscribe'
-    return render_template('unsubscribe.html',title = title, unsubscribe_form=form)
+    return render_template('unsubscribe.html',title = title, unsubscribe_form=form, quote=quote)
 
 
 @main.route('/contact',methods = ['GET','POST'])
 def contact():
+    quote=get_quote()
     form=ContactForm()
 
     if form.validate_on_submit():
@@ -193,22 +200,25 @@ def contact():
         return redirect(url_for('.contact'))   
 
     title = 'Contact'
-    return render_template('contact.html',title = title, contact_form=form)
+    return render_template('contact.html',title = title, contact_form=form, quote=quote)
 
    
 @main.route('/profile')
-def profile(): 
+def profile():
+    quote=get_quote() 
+    blog_posts=Post.query.order_by(Post.posted.desc()) 
     author = Admin.query.first()
     if author is None:
         abort(404)
 
     title='Author profile'
-    return render_template('profile.html', author=author)
+    return render_template('profile.html', author=author, posts=blog_posts, quote=quote)
 
 
 @main.route('/update_profile',methods = ['GET','POST'])
 @login_required
-def update_profile(): 
+def update_profile():
+    quote=get_quote() 
     author = Admin.query.first()
     if author is None:
         abort(404)
@@ -231,7 +241,7 @@ def update_profile():
         return redirect(url_for('.profile'))
 
     title='Update profile'
-    return render_template('update_profile.html', form=form)
+    return render_template('update_profile.html', form=form, quote=quote, title=title)
 
 @main.route('/post/category/<cat>')
 def category(cat):

@@ -48,7 +48,8 @@ class Post(db.Model):
     title=db.Column(db.String)
     text=db.Column(db.String)
     posted = db.Column(db.DateTime,default=datetime.utcnow)    
-    category = db.Column(db.String)  
+    category = db.Column(db.String)
+    post_pic_path = db.Column(db.String)  
     comments = db.relationship('Comment',backref = 'post',lazy = "dynamic")    
 
     def save_post(self):

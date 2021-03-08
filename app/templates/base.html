@@ -1,5 +1,74 @@
 {% extends 'bootstrap/base.html'%}
 
+{% block navbar %}
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">On the Blog.</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/"><span class="fa fa-home"></span> Home <span class="sr-only">(current)</span></a></li>          
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="{{url_for('main.category',cat='frontend')}}">Frontend</a></li>
+              <li><a href="{{url_for('main.category',cat='backend')}}">Backend</a></li>
+              <li><a href="{{url_for('main.category',cat='mobile')}}">Mobile</a></li>
+              <li><a href="{{url_for('main.category',cat='fullstack')}}">Fullstack</a></li>
+              <li><a href="{{url_for('main.category',cat='devOps')}}">DevOps</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">Latest posts</a></li>              
+            </ul>
+          </li>
+          <li><a href="/profile">Author</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Subscribe <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/subscribe">Subscribe</a></li>
+              <li><a href="/unsubscribe">Unsubscribe</a></li>                           
+            </ul>
+          </li>
+          <li><a href="/contact">Contact</a></li>
+        </ul> 
+        {% if current_user.is_authenticated %}
+        <ul class="nav navbar-nav navbar-right">  
+            <li><a href="#">New post</a></li>        
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{current_user.username| capitalize}} <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/update_profile">Edit profile</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>              
+              </ul>
+            </li>
+        </ul>
+        {% else %} 
+        <ul class="nav navbar-nav navbar-right">          
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{{url_for('auth.login')}}">Sign in</a></li>              
+              </ul>
+            </li>
+        </ul>
+        {%endif%}        
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+{% endblock %}
+
 {% block styles%}
     {{ super() }}
     <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}">

@@ -8,11 +8,74 @@ html, body{
     height: 100%;
     width: 100%;    
     font-family: 'PT Serif', serif;  
-    font-size: medium;
-    background-color: #f4f4f4;
+    font-size: medium;    
 }
 
-a {
+.navbar-brand{
+    font-family: 'Special Elite', cursive;
+    color: black !important;
+    font-weight: 600;
+    font-size: 1.5em;
+}
+
+img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.author-card{
+    color: lightcyan;
+}
+
+.author-card p{
+    font-size: small;
+}
+
+.author-card img {    
+    width: 100%;    
+    object-fit: cover;
+}
+
+.mb-4{
+    margin-bottom: 1em;
+}
+
+.row.display-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.thumbnail {
+    height: 100%;
+}
+
+.jumbo{
+    background-image: url('https://images.wallpaperscraft.com/image/surface_dark_background_texture_50754_1280x720.jpg');    
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.jumbo a {    
+    color: inherit;
+}
+
+.jumbo a :hover{    
+    color: cyan !important;      
+}
+
+.carousel-border{    
+    padding: 0%;
+}
+
+.navbar{
+    margin-bottom: 0%;
+}
+
+/* a {
     text-decoration: none !important;
     color: inherit;
 }
@@ -135,4 +198,4 @@ hr{
 
 .comment-card{
     padding-top: 0.5em;    
-}
+} */

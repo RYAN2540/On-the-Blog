@@ -11,6 +11,7 @@
         <div class="col-xs-12 border-b">
             <div class="card">
                 <div class="card-body">
+                    <img class="card-img-top" src="{{url_for('static',filename=post.post_pic_path)}}" alt="Profile picture">
                     <h4 class="card-title">{{post.title | upper}}</h4>
                     <h5 class="card-subtitle mb-2 text-muted">{{post.category | upper}}</h5>                    
                     <h5 class="card-subtitle mb-2 text-muted">{{post.posted.strftime("%d %b %Y %I:%M %p")}}</h5>

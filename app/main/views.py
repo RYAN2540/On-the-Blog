@@ -12,8 +12,11 @@ from ..email import mail_message
 def index():
     quote=get_quote()
     blog_posts=Post.query.order_by(Post.posted.desc())
+    author = Admin.query.first()
+    if author is None:
+        abort(404)
 
-    return render_template('index.html', quote=quote, posts=blog_posts)
+    return render_template('index.html', quote=quote, posts=blog_posts,author=author)
 
 
 @main.route('/admin',methods = ['GET','POST'])
@@ -26,7 +29,7 @@ def admin():
         category = form.category.data
 
         # Updated post instance
-        this_post = Post(title=title, text=text, category=category)
+        this_post = Post(title=title, text=text, category=category, post_pic_path='photos/sample-image.jpeg')
 
         # save post method
         this_post.save_post()
@@ -80,6 +83,13 @@ def update_blog(post_id):
         db.session.add(post)
         db.session.commit()
 
+        return redirect(url_for('.blog_post', post_id=post_id))
+
+    if 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path = f'photos/{filename}'
+        post.post_pic_path = path
+        db.session.commit()
         return redirect(url_for('.blog_post', post_id=post_id))
 
     title = 'Update post'

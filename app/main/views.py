@@ -29,7 +29,7 @@ def admin():
 
         # save post method
         this_post.save_post()
-        return redirect(url_for('.admin'))
+        return redirect(url_for('.index'))
 
     title = 'Admin Page'
 
@@ -76,6 +76,18 @@ def update_blog(post_id):
     title = 'Update post'
 
     return render_template('update_post.html', title=title, post_form=form, post=post)
+
+
+@main.route('/post/delete/<post_id>',methods = ['GET','POST'])
+@login_required
+def delete_blog(post_id):
+    post= Post.query.filter_by(id = post_id).first() 
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(url_for('.index'))
+
+
 
 
 

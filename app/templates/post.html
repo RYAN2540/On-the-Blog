@@ -16,7 +16,8 @@
                     <h5 class="card-subtitle mb-2 text-muted">{{post.posted.strftime("%d %b %Y %I:%M %p")}}</h5>
                     <p class="card-text">{{post.text}}</p>  
                     {% if current_user.is_authenticated %} 
-                        <button><a href="{{(url_for('main.update_blog', post_id=post.id))}}">Edit</a></button>    
+                    <button class="btn btn-info"><a href="{{(url_for('main.update_blog', post_id=post.id))}}">Edit</a></button> 
+                    <button class="btn btn-danger"><a href="{{(url_for('main.delete_blog', post_id=post.id))}}">Delete</a></button>    
                     {% endif %}                                        
                 </div>
             </div>

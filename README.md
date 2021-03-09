@@ -2,10 +2,10 @@
 #### A blog website on software development, 08/03/2021
 #### By [Ryan Rotich](https://github.com/RYAN2540)
 
-### [On the Blog app](/)
+### [On the Blog app](https://onthecodeblogs.herokuapp.com/)
 
-<img src="./app/static/images/On the Blog-home.png"
-     alt="On the Blog home image"
+<img src="./app/static/photos/screensave.png"
+     alt="On-the-Blog home image"
      style="width=100%;" />
 
 ## Description

@@ -4,7 +4,7 @@
 
 ### [On the Blog app](https://onthecodeblogs.herokuapp.com/)
 
-<img src="./app/static/photos/screensave.png"
+<img src="./app/static/images/screensave.png"
      alt="On-the-Blog home image"
      style="width=100%;" />
 

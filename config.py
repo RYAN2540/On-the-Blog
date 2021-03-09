@@ -24,7 +24,7 @@ class TestConfig(Config):
 
 
 class DevConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://ryan:crossman123@localhost/ontheblog'
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL_DEV")
     DEBUG = True
 
 config_options = {
